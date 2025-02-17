@@ -108,7 +108,6 @@ class LoginViewModelTest {
     fun `When LoginAction Should not return user`() = runTest {
         val email = ""
         val password = "password123"
-        val user = dummyUser
 
         loginViewModel.doAction(LoginAction.SetEmail(email))
         loginViewModel.doAction(LoginAction.SetPassword(password))

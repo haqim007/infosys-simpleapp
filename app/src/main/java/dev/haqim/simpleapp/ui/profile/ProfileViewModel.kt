@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.haqim.simpleapp.domain.model.User
 import dev.haqim.simpleapp.domain.usecase.GetUserUseCase
+import dev.haqim.simpleapp.domain.usecase.IGetUserUseCase
+import dev.haqim.simpleapp.domain.usecase.ILogoutUseCase
 import dev.haqim.simpleapp.domain.usecase.LogoutUseCase
 import dev.haqim.simpleapp.ui.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val getUserUseCase: GetUserUseCase,
-    private val logoutUseCase: LogoutUseCase
+    private val getUserUseCase: IGetUserUseCase,
+    private val logoutUseCase: ILogoutUseCase
 ) : BaseViewModel<ProfileState, ProfileAction>() {
     override val _state: MutableStateFlow<ProfileState> = MutableStateFlow(ProfileState())
     override fun doAction(action: ProfileAction) {
@@ -27,7 +29,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun loadUser() {
         viewModelScope.launch {
-            getUserUseCase().collect {
+            getUserUseCase.process().collect {
                 _state.update { state ->
                     state.copy(user = it)
                 }
@@ -37,7 +39,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun logout() {
         viewModelScope.launch {
-            logoutUseCase().first()
+            logoutUseCase.process().first()
         }
     }
 

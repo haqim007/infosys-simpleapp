@@ -7,6 +7,6 @@ import javax.inject.Inject
 
 class GetUserUseCase @Inject constructor(
     private val repository: IAppRepository
-) {
-    operator fun invoke(): Flow<User> = repository.getUser()
+) : IGetUserUseCase{
+    override fun process(): Flow<User> = repository.getUser()
 }

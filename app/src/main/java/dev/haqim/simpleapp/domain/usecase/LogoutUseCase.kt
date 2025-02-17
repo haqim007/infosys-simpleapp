@@ -6,6 +6,6 @@ import javax.inject.Inject
 
 class LogoutUseCase @Inject constructor(
     private val repository: IAppRepository
-) {
-    operator fun invoke(): Flow<Boolean> = repository.logout()
+): ILogoutUseCase {
+    override fun process(): Flow<Boolean> = repository.logout()
 }
