@@ -84,7 +84,6 @@ class LoginViewModelTest {
             verify(loginUseCase).process(email, password)
             cancelAndIgnoreRemainingEvents()
         }
-
     }
 
     @Test
@@ -101,7 +100,6 @@ class LoginViewModelTest {
         loginViewModel.doAction(LoginAction.Login)
 
         loginViewModel.state.test {
-            awaitItem() // loading
             assertEquals(user, awaitItem().result.data)
         }
     }
@@ -111,13 +109,6 @@ class LoginViewModelTest {
         val email = ""
         val password = "password123"
         val user = dummyUser
-        whenever(loginUseCase.process(email, password)).thenReturn(
-            flow {
-                emit(Resource.Loading())
-                delay(100)
-                Resource.Success(user)
-            }
-        )
 
         loginViewModel.doAction(LoginAction.SetEmail(email))
         loginViewModel.doAction(LoginAction.SetPassword(password))
